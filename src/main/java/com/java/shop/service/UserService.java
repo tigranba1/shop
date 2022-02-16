@@ -1,6 +1,7 @@
 package com.java.shop.service;
 
 import com.java.shop.dto.UserDTO;
+import com.java.shop.entity.User;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,7 +12,7 @@ public interface UserService {
      * @param userDTO
      * @return
      */
-    public UserDTO createUser(UserDTO userDTO);
+    public User createUser(UserDTO userDTO);
 
     /**
      * Get user by email
