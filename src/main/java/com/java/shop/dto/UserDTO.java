@@ -2,9 +2,6 @@ package com.java.shop.dto;
 
 import com.java.shop.enums.UserType;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 public class UserDTO implements Serializable {

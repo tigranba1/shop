@@ -9,14 +9,15 @@ import com.java.shop.repository.CategoryRepository;
 import com.java.shop.repository.ProductRepository;
 import com.java.shop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+
 @Service
 public class ProductServiceImpl implements ProductService {
+
     @Autowired
     ProductRepository productRepository;
     @Autowired
@@ -42,13 +43,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> searchByPrice(Double minPrice, Double maxPrice) {
+        //TODO to be done later
         return null;
     }
 
     @Override
     public List<Product> searchByCategory(int id) {
         if (id != 0) {
-
 
         return productRepository.findByCategoryId(id);
     }else{
@@ -81,6 +82,13 @@ public class ProductServiceImpl implements ProductService {
             product = productRepository.findById(productDTO.getId()).orElseThrow(EntityNotFoundException::new);
             System.out.println("The product " + productDTO.getName() + " with id " + productDTO.getId() + " is updating...");
         }catch (EntityNotFoundException e){
+            e.printStackTrace();
+        }
+
+        try{
+            category = categoryRepository.findById(productDTO.getCategoryID()).orElseThrow(EntityNotFoundException::new);
+        }
+        catch (EntityNotFoundException e){
             e.printStackTrace();
         }
         if (category != null && product != null){

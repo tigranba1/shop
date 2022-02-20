@@ -16,5 +16,4 @@ public interface AuthAPI {
     @GetMapping("/logout")
     public Status logUserOut(@Valid @RequestBody UserDTO userDTO);
 
-
 }

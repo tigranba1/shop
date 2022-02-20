@@ -11,6 +11,7 @@ import javax.validation.constraints.NotBlank;
 @Entity
 @Table(name = "category")
 public class Category {
+
     private @Id
     @GeneratedValue
     int id;

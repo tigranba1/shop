@@ -6,6 +6,7 @@ import javax.validation.constraints.NotBlank;
 @Entity
 @Table(name="products")
 public class Product {
+
     private @Id @GeneratedValue long id;
     private @NotBlank String name;
     private @NotBlank Double price;
