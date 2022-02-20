@@ -1,37 +1,72 @@
 package com.java.shop.service.impl;
 
+import com.java.shop.components.UserMapping;
 import com.java.shop.dto.UserDTO;
 import com.java.shop.entity.User;
-import com.java.shop.enums.UserType;
-import com.java.shop.exceptions.UserAlreadyExistException;
+import com.java.shop.enums.Status;
+import com.java.shop.exceptions.IncorrectCredentialsException;
+import com.java.shop.exceptions.UserNotFoundException;
+import com.java.shop.repository.UserRepository;
 import com.java.shop.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 public class UserServiceImpl implements UserService {
 
-    @Override
-    public User createUser(UserDTO userDTO) {
-        User user = new User(userDTO.getFirstName(),
-                userDTO.getLastName(),
-                userDTO.getEmail(),
-                userDTO.getPassword(), UserType.ADMIN);
-        return user;
-    }
+    @Autowired
+    UserRepository userRepository;
 
-    public UserServiceImpl() {
-    }
+    @Autowired
+    UserMapping userMapping;
 
     @Override
-    public UserDTO getUser(String email) {
-       return null;
+    public Status createUser(UserDTO userDTO) {
+        List<User> users = userRepository.findAll();
+        System.out.println("New user: " + userDTO.toString());
+        if (!users.isEmpty()) {
+            for (User user : users) {
+                if (user.getUsername().equals(userDTO.getUsername())) {
+                    System.out.println("User is already exist");
+                    return Status.USER_ALREADY_EXISTS;
+                }
+            }
+        }
+        userRepository.save(userMapping.toUser(userDTO));
+        return Status.SUCCESS;
     }
 
     @Override
-    public UserDTO updateUser(String userId, UserDTO userDTO) {
-        return null;
+    public Status loginUser(UserDTO userDTO) {
+        User user = userRepository.findByUsernameAndPassword(userDTO.getUsername(), userDTO.getPassword());
+        if (user == null) {
+            throw new UserNotFoundException("User not found");
+        }
+        if (!user.getUsername().equals(userDTO.getUsername())) {
+            throw new UserNotFoundException("User not found");
+        }
+        if (!user.getPassword().equals(userDTO.getPassword())) {
+            throw new IncorrectCredentialsException("Incorrect  credentials");
+        }
+        if (user.getUsername().equals(userDTO.getUsername()) && user.getPassword().equals(userDTO.getPassword())) {
+            user.setLoggedin(true);
+            return Status.SUCCESS;
+        }
+        return Status.FAILURE;
     }
 
     @Override
-    public void deleteUser(String userId) {
-
+    public Status logUserOut(UserDTO userDTO) {
+        List<User> users = userRepository.findAll();
+        for (User user : users) {
+            if (user.getUsername().equals(userDTO.getUsername())) {
+                user.setLoggedin(false);
+                userRepository.save(user);
+                System.out.println("User is logged is" + user.isLoggedin());
+                return Status.SUCCESS;
+            }
+        }
+        return Status.FAILURE;
     }
+
 }

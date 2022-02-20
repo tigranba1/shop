@@ -2,53 +2,47 @@ package com.java.shop.entity;
 
 import com.java.shop.enums.UserType;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+
+@Entity
+@Table(name = "users")
 public class User {
 
-    private int userID;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String password;
-    private UserType userType;
+    private @Id @GeneratedValue long id;
+    private @NotBlank String username;
+    private @NotBlank String password;
+    private @NotBlank UserType usertype;
+    private @NotBlank boolean loggedin;
 
-    public User(String firstName, String lastName, String email, String password, UserType userType) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
+    public User(String username, String password, UserType usertype) {
+        this.username = username;
         this.password = password;
-        this.userType = userType;
+        this.usertype = usertype;
+        this.loggedin = false;
     }
 
-    public int getUserID() {
-        return userID;
+    public User() {
+
     }
 
-    public void setUserID(int userID) {
-        this.userID = userID;
+    public long getId() {
+        return id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public String getUsername() {
+        return username;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -59,11 +53,19 @@ public class User {
         this.password = password;
     }
 
-    public UserType getUserType() {
-        return userType;
+    public UserType getUsertype() {
+        return usertype;
     }
 
-    public void setUserType(UserType userType) {
-        this.userType = userType;
+    public void setUsertype(UserType usertype) {
+        this.usertype = usertype;
+    }
+
+    public boolean isLoggedin() {
+        return loggedin;
+    }
+
+    public void setLoggedin(boolean loggedin) {
+        this.loggedin = loggedin;
     }
 }
